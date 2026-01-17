@@ -1,0 +1,277 @@
+<!DOCTYPE html> 
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prenotazioni - Barbiere da Marco</title>
+
+  <!-- FAVICON -->
+  <link rel="icon" type="image/x-icon" href="foto/logo.ico">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+      background: url('foto/sfondo.jpg') center/cover no-repeat fixed;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: -1;
+    }
+
+    header {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 20px 0;
+      text-align: center;
+      border-bottom: 2px solid #f9c013;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    nav ul {
+      list-style: none;
+      margin-top: 10px;
+    }
+
+    nav li {
+      display: inline-block;
+      margin: 0 15px;
+    }
+
+    nav a {
+      color: #f9c013;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s, border-bottom 0.3s;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: white;
+      border-bottom: 2px solid #f9c013;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 60px 20px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 12px;
+      max-width: 600px;
+      margin: 80px auto;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+      animation: fadeIn 1.5s ease-out;
+    }
+
+    .hero h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    label {
+      font-weight: 500;
+      color: #f9c013;
+    }
+
+    input, select {
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      width: 100%;
+    }
+
+    input[type="submit"] {
+      background: #f9c013;
+      color: #222;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      border-radius: 25px;
+    }
+
+    input[type="submit"]:hover {
+      background: #ffe375;
+      transform: scale(1.05);
+    }
+
+    .message {
+      display: none;
+      margin-top: 20px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      animation: fadeIn 1s ease-out;
+    }
+
+    .message.success {
+      color: #a7ff9b;
+    }
+
+    .message.error {
+      color: #ff7373;
+    }
+
+    footer {
+      background: rgba(0, 0, 0, 0.85);
+      text-align: center;
+      padding: 15px 10px;
+      font-size: 0.9rem;
+      border-top: 2px solid #f9c013;
+      margin-top: 60px;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Barbiere da Marco</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="servizi.html">Servizi</a></li>
+        <li><a href="prodotti.html">Prodotti</a></li>
+        <li><a href="contatti.html">Contatti</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Prenota il tuo appuntamento</h2>
+    <p>Compila il modulo per fissare data e ora della tua visita.</p>
+
+    <form id="bookingForm">
+      <label for="nome">Nome</label>
+      <input type="text" id="nome" name="nome" required>
+
+      <label for="cognome">Cognome</label>
+      <input type="text" id="cognome" name="cognome" required>
+
+      <label for="telefono">Numero di telefono</label>
+      <div style="display: flex; gap: 10px;">
+        <select id="prefisso" name="prefisso" required style="max-width: 120px;">
+          <option value="+39">+39</option>
+          <option value="+41">+41</option>
+          <option value="+33">+33</option>
+          <option value="+44">+44</option>
+          <option value="+49">+49</option>
+        </select>
+        <input type="tel" id="telefono" name="telefono" required placeholder="123 456 7890" pattern="[0-9]{6,15}">
+      </div>
+
+      <label for="data">Data</label>
+      <input type="date" id="data" name="data" required>
+
+      <label for="ora">Ora</label>
+      <input type="time" id="ora" name="ora" required>
+
+      <input type="submit" value="Invia">
+    </form>
+
+    <div class="message" id="formMessage"></div>
+  </section>
+
+  <footer>
+    <p>© 2025 Barbiere da Marco | Via Roma 10, Milano | Tel: 02 1234567</p>
+  </footer>
+
+  <script>
+    document.getElementById("bookingForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const nome = document.getElementById("nome").value.trim();
+      const cognome = document.getElementById("cognome").value.trim();
+      const prefisso = document.getElementById("prefisso").value;
+      const telefono = document.getElementById("telefono").value.trim();
+      const data = document.getElementById("data").value;
+      const ora = document.getElementById("ora").value;
+      const message = document.getElementById("formMessage");
+
+      // Controllo che tutti i campi siano compilati
+      if (!nome || !cognome || !prefisso || !telefono || !data || !ora) {
+        message.textContent = "Compila tutti i campi.";
+        message.className = "message error";
+        message.style.display = "block";
+        return;
+      }
+
+      // Controllo che data e ora siano nel futuro
+      const now = new Date();
+      const selectedDateTime = new Date(`${data}T${ora}`);
+
+      if (selectedDateTime <= now) {
+        message.textContent = "Inserisci una data e un'ora future.";
+        message.className = "message error";
+        message.style.display = "block";
+        return;
+      }
+
+      // --- CONTROLLO ORARI DI APERTURA ---
+
+      const day = selectedDateTime.getDay(); // 0 domenica, 6 sabato
+      const hour = parseInt(ora.split(":")[0], 10);
+      const minutes = parseInt(ora.split(":")[1], 10);
+      const decimalHour = hour + minutes / 60;
+
+      let isOpen = true;
+
+      if (day === 0) {
+        isOpen = false;
+      } else if (day >= 1 && day <= 5) {
+        if (decimalHour < 9 || decimalHour > 19) isOpen = false;
+      } else if (day === 6) {
+        if (decimalHour < 9 || decimalHour > 14) isOpen = false;
+      }
+
+      if (!isOpen) {
+        message.textContent = "Siamo chiusi negli orari selezionati.";
+        message.className = "message error";
+        message.style.display = "block";
+        return;
+      }
+
+      // --- FINE CONTROLLO ORARI ---
+
+      // Tutto ok → mostra messaggio di ringraziamento e reindirizza
+      message.textContent = "La ringraziamo per averci scelto!";
+      message.className = "message success";
+      message.style.display = "block";
+      document.getElementById("bookingForm").style.display = "none";
+
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 3000);
+    });
+  </script>
+</body>
+</html>
